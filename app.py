@@ -15,6 +15,19 @@ USERS = {
     "bob": ["team2"]
 }
 
+@app.route("/")
+def index():
+    return """
+<h2>Team Configuration Service</h2>
+<p>Internal platform for managing team scoped settings.</p>
+<ul>
+<li>POST /login</li>
+<li>GET /api/team/&lt;team&gt;/settings</li>
+<li>GET /health</li>
+</ul>
+<p>Active team is derived from the user session.</p>
+"""
+
 @app.route("/health")
 def health():
     return "ok"
@@ -30,7 +43,6 @@ def login():
 
 @app.route("/api/team/<team>/settings")
 def settings(team):
-    # BUG: trusts session team instead of request ownership
     if team == "team2":
         return jsonify({"team":team,"flag":FLAG})
     return jsonify({"team":team})
